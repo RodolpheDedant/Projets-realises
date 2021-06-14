@@ -1,0 +1,14 @@
+#!/usr/bin/env python3
+
+from src.args import parse_args
+from src.bombyx import main
+
+
+def entrypoint() -> int:
+    bombyx = parse_args()
+
+    return main(bombyx)
+
+
+if __name__ == "__main__":
+    exit(entrypoint())

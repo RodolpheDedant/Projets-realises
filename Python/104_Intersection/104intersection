@@ -1,0 +1,196 @@
+#!/usr/bin/env python3
+from math import tan, sqrt, pow, pi
+from sys import argv, exit
+
+
+def unknownt_2(delta :float, b :float, a :float, t_2 :float) -> float:
+    t_2 = (-b - sqrt(delta)) / (2 * a)
+    return t_2
+
+
+def unknown(delta :float, b :float, a :float, t :float) -> float:
+    if delta > 0:
+        t = (-b + sqrt(delta)) / (2 * a)
+        print("2 intersection points:")
+        return t
+    if delta < 0:
+        print("No intersection point.")
+        return 0
+    if delta == 0:
+        print("1 intersection point:")
+        if a == 0:
+            return 84
+        else:
+            t = -b / (2 * a)
+            return t
+    return 0
+
+
+def sphere(*args :str) -> int:
+    try:
+        x = int(argv[2])
+        y = int(argv[3])
+        z = int(argv[4])
+        x_v = int(argv[5])
+        y_v = int(argv[6])
+        z_v = int(argv[7])
+        r = int(argv[8])
+        t: float = 0
+        t_2: float = 0
+    except:
+        return 84
+    if x_v == 0 and y_v == 0 and z_v == 0:
+        return 84
+    if r < 0:
+        return 84
+    print(f"Sphere of radius {r}")
+    print(
+        f"Line passing through the point ({x}, {y}, {z}) and parallel to the vector ({x_v}, {y_v}, {z_v})"
+    )
+    a = (x_v * x_v) + (y_v * y_v) + (z_v * z_v)
+    b = (2 * x_v * x) + (2 * y_v * y) + (2 * z_v * z)
+    c = (x * x) + (y * y) + (z * z) - (r * r)
+    delta = (b * b) - (4 * a * c)
+    t = unknown(delta, b, a, t)
+    if delta > 0:
+        t_2 = unknownt_2(delta, b, a, t_2)
+    x_final = x_v * t + x
+    y_final = y_v * t + y
+    z_final = z_v * t + z
+    if delta >= 0:
+        print(f"({x_final:.3f}, {y_final:.3f}, {z_final:.3f})")
+        x_final2 = x_v * t_2 + x
+        y_final2 = y_v * t_2 + y
+        z_final2 = z_v * t_2 + z
+    if delta > 0:
+        print(f"({x_final2:.3f}, {y_final2:.3f}, {z_final2:.3f})")
+    return 0
+
+
+def cylinder(*args :str) -> int:
+    try:
+        x = int(argv[2])
+        y = int(argv[3])
+        z = int(argv[4])
+        x_v = int(argv[5])
+        y_v = int(argv[6])
+        z_v = int(argv[7])
+        r = int(argv[8])
+        t: float = 0
+        t_2: float = 0
+    except:
+        return 84
+    if x_v == 0 and y_v == 0 and z_v == 0:
+        return 84
+    if r < 0:
+        return 84
+    print(f"Cylinder of radius {r}")
+    print(
+        f"Line passing through the point ({x}, {y}, {z}) and parallel to the vector ({x_v}, {y_v}, {z_v})"
+    )
+    length = sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2))
+    if length == r and x_v == 0 and y_v == 0:
+        print("There is an infinite number of intersection points")
+        return 0
+    a = (x_v * x_v) + (y_v * y_v)
+    b = (2 * x_v * x) + (2 * y_v * y)
+    c = (x * x) + (y * y) - (r * r)
+    delta = (b * b) - (4 * a * c)
+    t = unknown(delta, b, a, t)
+    if delta > 0:
+        t_2 = unknownt_2(delta, b, a, t_2)
+    x_final = x_v * t + x
+    y_final = y_v * t + y
+    z_final = z_v * t + z
+    if delta >= 0:
+        print(f"({x_final:.3f}, {y_final:.3f}, {z_final:.3f})")
+        x_final2 = x_v * t_2 + x
+        y_final2 = y_v * t_2 + y
+        z_final2 = z_v * t_2 + z
+    if delta > 0:
+        print(f"({x_final2:.3f}, {y_final2:.3f}, {z_final2:.3f})")
+    return 0
+
+
+def cone(*args :str) -> int:
+    try:
+        x = int(argv[2])
+        y = int(argv[3])
+        z = int(argv[4])
+        x_v = int(argv[5])
+        y_v = int(argv[6])
+        z_v = int(argv[7])
+        angle = int(argv[8])
+        t: float = 0
+        t_2: float = 0
+    except:
+        return 84
+    if x_v == 0 and y_v == 0 and z_v == 0:
+        return 84
+    if angle <= 0 or angle >= 90:
+        return 84
+    print(f"Cone with a {angle} degree angle")
+    print(
+        f"Line passing through the point ({x}, {y}, {z}) and parallel to the vector ({x_v}, {y_v}, {z_v})"
+    )
+    r = tan((pi * angle) / 180)
+    a = (x_v * x_v) + (y_v * y_v) - (pow(r, 2) * (z_v * z_v))
+    b = (2 * x_v * x) + (2 * y_v * y) - (pow(r, 2) * (2 * z_v * z))
+    c = (x * x) + (y * y) - (pow(r, 2) * (z * z))
+    delta = (b * b) - (4 * a * c)
+    t = unknown(delta, b, a, t)
+    if delta > 0:
+        t_2 = unknownt_2(delta, b, a, t_2)
+    x_final = x_v * t + x
+    y_final = y_v * t + y
+    z_final = z_v * t + z
+    if delta >= 0:
+        print(f"({x_final:.3f}, {y_final:.3f}, {z_final:.3f})")
+        x_final2 = x_v * t_2 + x
+        y_final2 = y_v * t_2 + y
+        z_final2 = z_v * t_2 + z
+    if delta > 0:
+        print(f"({x_final2:.3f}, {y_final2:.3f}, {z_final2:.3f})")
+    return 0
+
+
+def main() -> int:
+    if len(argv) == 2 and (argv[1][0]) == "-" and argv[1][1] == "h":
+        print(f"USAGE")
+        print(f"    ./104intersection opt xp yp zp xv yv zv p")
+        print(f"\n")
+        print(f"DESCRIPTION")
+        print(
+            f"    opt             surface option: 1 for the sphere, 2 for the cylinder, 3 for the cone"
+        )
+        print(
+            f"    (xp, yp, zp)    coordinates of a point by which the light ray passes through"
+        )
+        print(f"    (xv, yv, zv)    coordinates of a vector parallel to the light ray")
+        print(
+            f"    p               parameters: radius of the sphere, radius of the cylinder, or"
+        )
+        print(f"                    angle formed by the cone and the Z-axis")
+        return 0
+    if len(argv) != 9:
+        return 84
+    try:
+        i = int(argv[1])
+    except:
+        return 84
+    if i not in (1, 2, 3):
+        return 84
+    all_function = (
+        sphere,
+        cylinder,
+        cone,
+    )
+
+    f = all_function[i - 1]
+    if f() == 84:
+        return 84
+    return 0
+
+
+if __name__ == "__main__":
+    exit(main())
